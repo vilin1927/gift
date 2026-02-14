@@ -40,8 +40,8 @@ export default function PuzzlePiece({
     <motion.div
       animate={{ x, y }}
       transition={{ type: "spring", stiffness: 500, damping: 35 }}
-      onClick={onTap}
-      className={`absolute rounded-lg overflow-hidden cursor-pointer active:brightness-110 ${
+      onTap={onTap}
+      className={`absolute rounded-lg overflow-hidden cursor-pointer active:brightness-110 touch-manipulation ${
         isCorrect && !isSolved
           ? "ring-2 ring-accent-gold/40"
           : ""
