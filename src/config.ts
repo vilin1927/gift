@@ -26,12 +26,14 @@ export const CONFIG = {
   puzzleGrid: { cols: 3, rows: 3 },
 
   media: [
-    { src: "/photos/IMG_6600.PNG", caption: "" },
-    { src: "/photos/IMG_6256.MOV", caption: "" },
-    { src: "/photos/IMG_6602.PNG", caption: "" },
-    { src: "/photos/IMG_6603.PNG", caption: "" },
-    { src: "/photos/IMG_6526.MOV", caption: "" },
-    { src: "/photos/IMG_6604.PNG", caption: "нарцисска, твоё первое фото мне 🌼" },
+    { src: "/photos/IMG_6600.jpg", caption: "" },
+    { src: "/photos/IMG_6256.mp4", caption: "" },
+    { src: "/photos/IMG_6602.jpg", caption: "" },
+    { src: "/photos/IMG_6603.jpg", caption: "" },
+    { src: "/photos/IMG_6526.mp4", caption: "" },
+    { src: "/photos/IMG_6604.jpg", caption: "нарцисска, твоё первое фото мне 🌼" },
+    { src: "/photos/IMG_6605.jpg", caption: "" },
+    { src: "/photos/IMG_6606.jpg", caption: "" },
   ] as MediaItem[],
 
   galleryFooter: "да, немного! будет больше 💛",
