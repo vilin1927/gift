@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
-const PASSWORD = "vovan";
+const PASSWORD = "vi199819";
 
 const WRONG_MESSAGES = [
   "Не-а...",
