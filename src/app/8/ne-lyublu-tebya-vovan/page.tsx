@@ -87,6 +87,65 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
 const JOKE_TEXTS = ["отжарь меня", "женись на мне"];
 const REAL_TEXTS = ["нажми на меня", "нажми на меня"];
 
+function DisappearingText({
+  text,
+  onComplete,
+  color,
+}: {
+  text: string;
+  onComplete: () => void;
+  color: string;
+}) {
+  const [dissolving, setDissolving] = useState(false);
+
+  useEffect(() => {
+    const showTimer = setTimeout(() => setDissolving(true), 2000);
+    const doneTimer = setTimeout(onComplete, 2800);
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(doneTimer);
+    };
+  }, [onComplete]);
+
+  return (
+    <span className="inline-flex justify-center flex-wrap">
+      {text.split("").map((char, i) => {
+        const randX = (Math.random() - 0.5) * 40;
+        const randY = (Math.random() - 0.5) * 30 - 10;
+        const randRotate = (Math.random() - 0.5) * 90;
+        const delay = i * 0.03;
+
+        return (
+          <motion.span
+            key={i}
+            className={`inline-block ${color}`}
+            style={{ whiteSpace: char === " " ? "pre" : undefined }}
+            animate={
+              dissolving
+                ? {
+                    opacity: 0,
+                    x: randX,
+                    y: randY,
+                    rotate: randRotate,
+                    scale: 0,
+                    filter: "blur(4px)",
+                  }
+                : { opacity: 1, x: 0, y: 0, rotate: 0, scale: 1, filter: "blur(0px)" }
+            }
+            transition={{
+              duration: 0.5,
+              delay: dissolving ? delay : 0,
+              ease: [0.4, 0, 1, 1],
+            }}
+          >
+            {char}
+          </motion.span>
+        );
+      })}
+    </span>
+  );
+}
+
 function GiftCardPreview({
   index,
   onClick,
@@ -95,11 +154,7 @@ function GiftCardPreview({
   onClick: () => void;
 }) {
   const [switched, setSwitched] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setSwitched(true), 2000);
-    return () => clearTimeout(timer);
-  }, []);
+  const handleDissolveComplete = useRef(() => setSwitched(true)).current;
 
   return (
     <motion.button
@@ -158,32 +213,25 @@ function GiftCardPreview({
               Подарок {index + 1}
             </p>
             <div
-              className={`text-xs h-4 relative overflow-hidden ${
+              className={`text-xs h-5 relative ${
                 index === 0 ? "text-[#80cbc4]/80" : "text-[#ce93d8]/80"
               }`}
             >
-              <AnimatePresence mode="wait">
-                {!switched ? (
-                  <motion.p
-                    key="joke"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {JOKE_TEXTS[index]}
-                  </motion.p>
-                ) : (
-                  <motion.p
-                    key="real"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {REAL_TEXTS[index]}
-                  </motion.p>
-                )}
-              </AnimatePresence>
+              {!switched ? (
+                <DisappearingText
+                  text={JOKE_TEXTS[index]}
+                  onComplete={handleDissolveComplete}
+                  color={index === 0 ? "text-[#80cbc4]/80" : "text-[#ce93d8]/80"}
+                />
+              ) : (
+                <motion.p
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                >
+                  {REAL_TEXTS[index]}
+                </motion.p>
+              )}
             </div>
           </div>
 
